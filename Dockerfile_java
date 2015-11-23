@@ -2,6 +2,9 @@
 FROM ubuntu
 MAINTAINER huangsihao "hsh.0223.ok@163.com"
 
+# Get noninteractive frontend for Debian to avoid some problems: #    debconf: unable to initialize frontend: Dialog
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN ln -snf /bin/bash /bin/sh
 
 # install command tools
@@ -31,5 +34,8 @@ RUN echo "root:root" | chpasswd
 EXPOSE 22
 EXPOSE 8080
 
-# run tomcat
-#ENTRYPOINT service tomcat7 start && tail -f /var/lib/tomcat7/logs/catalina.out
+#add file
+ADD start.sh ./start.sh
+RUN chmod +x ./start.sh
+# run
+CMD ["./start.sh"] 
