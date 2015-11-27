@@ -5,7 +5,7 @@ MAINTAINER huangsihao "hsh.0223.ok@163.com"
 # Get noninteractive frontend for Debian to avoid some problems: #    debconf: unable to initialize frontend: Dialog
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN ln -snf /bin/bash /bin/sh
+#:RUN ln -snf /bin/bash /bin/sh
 
 # install command tools
 #RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe"> /etc/apt/sources.list
@@ -21,9 +21,8 @@ RUN mkdir -p /usr/software
 #install JDK
 RUN wget  --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie"  -P /usr/software http://download.oracle.com/otn-pub/java/jdk/7u79-b15/jdk-7u79-linux-x64.tar.gz
 RUN tar -xzvf /usr/software/jdk-7u79-linux-x64.tar.gz -C /usr/software/
-RUN echo export PATH=$PATH:/usr/software/jdk1.7.0_79/bin >>/etc/profile
-RUN source /etc/profile
-
+ENV JAVA_HOME /usr/software/jdk1.7.0_79
+ENV PATH ${PATH}:${JAVA_HOME}/bin
 # install tomcat7
 RUN apt-get install -y tomcat7
 
@@ -38,4 +37,4 @@ EXPOSE 8080
 ADD start.sh ./start.sh
 RUN chmod +x ./start.sh
 # run
-CMD ["./start.sh"] 
+ENTRYPOINT ["./start.sh"] 
